@@ -24,6 +24,8 @@ namespace Player.Control
         [SerializeField] private float acceleration;
 
         private Vector3 currentVelocity;
+        private Vector3 inputDir;
+        private Vector2 input;
 
         private float horizontalInput;
         private float verticalInput;
@@ -35,11 +37,17 @@ namespace Player.Control
             Move(GetMoveDir());
         }
 
+        public Vector3 GetForward() => GetMoveDir();
+        public Vector3 GetRight() => playerTransform.right;
+        public Vector3 GetInputDir() => inputDir;
+        public Vector2 GetDesiredInput() => input;
+        public Vector3 GetVelocity() => playerRigidBody.velocity;
+
         private void Move(Vector3 dir)
         {
-            Vector3 inputDir = dir * verticalInput + playerTransform.right * horizontalInput;
+            inputDir = dir * input.y + playerTransform.right * input.x;
             currentVelocity = Vector3.Lerp(currentVelocity, inputDir * movementSpeed, acceleration * Time.deltaTime);
-
+            
             playerRigidBody.velocity = currentVelocity;
         }
 
@@ -70,6 +78,8 @@ namespace Player.Control
             {
                 verticalInput = 0.0f;
             }
+
+            input = new Vector2(horizontalInput, verticalInput).normalized;
         }
 
         private Vector3 GetMoveDir()

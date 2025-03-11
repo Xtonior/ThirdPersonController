@@ -9,6 +9,7 @@ namespace Player.Control
         [Header("References")]
         [SerializeField] private PlayerCameraCollision playerCameraCollision;
         [SerializeField] private Transform playerRoot;
+        [SerializeField] private Transform orientationBody;
         [SerializeField] private Transform aimPoint;
 
         [Header("Parameters")]
@@ -30,7 +31,7 @@ namespace Player.Control
             RotateRootPlayer();
         }
 
-        public Vector3 GetLookDir() => aimPoint.forward;
+        public Vector3 GetLookDir() => orientationBody.forward;
 
         private void RotateCamera()
         {            
@@ -54,7 +55,7 @@ namespace Player.Control
 
         private void RotateRootPlayer()
         {
-            aimPoint.rotation = Quaternion.AngleAxis(rotY, playerRoot.up);
+            orientationBody.rotation = Quaternion.AngleAxis(rotY, playerRoot.up);
         }
 
         private void UpdateInput()
